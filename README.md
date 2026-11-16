@@ -1,1 +1,1 @@
-# gsu.github.io
+# gsu
