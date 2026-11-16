@@ -1,0 +1,14 @@
+/* Плавное переключение цветов при смене темы */
+body {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Аккуратный тонкий скроллбар для панели дней недели на мобильных экранах */
+#dayTabs::-webkit-scrollbar {
+  height: 4px;
+}
+
+#dayTabs::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.4);
+  border-radius: 9999px;
+}
