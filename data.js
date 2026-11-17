@@ -17,7 +17,7 @@ const bottomNavItems = [
     icon: 'send', 
     action: 'telegram', // <-- поменяли с 'link' на 'telegram'
     channels: [
-      { name: 'Основной канал', desc: 'Новости и обновления', url: 'https://t.me/francisk_skorina_gsu' },
+      { name: 'Основной канал', desc: 'Новости и обновления', url: 'https://t.me/maxim1654' },
       { name: 'Канал ГГУ', desc: 'Новости университета', url: 'https://t.me/francisk_skorina_gsu' }
     ]
   },
