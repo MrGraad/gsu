@@ -1,3 +1,9 @@
+const tg = window.Telegram?.WebApp;
+if (tg) {
+  tg.ready();
+  tg.expand();
+}
+
 // Автоматический расчёт текущей недели (1-я неделя = 'bottom', 2-я = 'top')
 function getCurrentWeekType() {
   const start = new Date(SEMESTER_START);
@@ -15,6 +21,7 @@ const initialGroup = availableItems.includes(savedGroup) ? savedGroup : availabl
 
 // Текущее состояние интерфейса
 let state = {
+  view: 'home',
   category: initialCategory,
   group: initialGroup,
   day: 1,
@@ -34,6 +41,106 @@ function initTheme() {
     htmlEl.classList.remove('dark');
     htmlEl.classList.add('light');
   }
+}
+
+function toggleTheme() {
+  const htmlEl = document.documentElement;
+  const isDark = htmlEl.classList.toggle('dark');
+  htmlEl.classList.toggle('light', !isDark);
+  Storage.saveTheme(isDark ? 'dark' : 'light');
+}
+
+function openView(viewName) {
+  state.view = viewName;
+  document.getElementById('homeView').classList.toggle('hidden', viewName !== 'home');
+  document.getElementById('scheduleView').classList.toggle('hidden', viewName !== 'schedule');
+  window.scrollTo(0, 0);
+  render();
+}
+
+function renderHomeTiles() {
+  const grid = document.getElementById('homeTilesGrid');
+  grid.innerHTML = homeTiles.map(tile => {
+    if (tile.active) {
+      return `
+        <button onclick="handleAction('${tile.action}')"
+                class="aspect-square rounded-2xl bg-slate-900 text-white dark:bg-white dark:text-slate-950 hover:opacity-90 active:scale-95 p-4 flex flex-col items-center justify-center gap-3 shadow-sm transition">
+          ${tile.icon ? `<i data-lucide="${tile.icon}" class="w-8 h-8 stroke-[1.75]"></i>` : ''}
+          <span class="font-bold text-base sm:text-lg text-center">${tile.title}</span>
+        </button>
+      `;
+    }
+    return `
+      <button onclick="handleAction('${tile.action}')"
+              class="aspect-square rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 active:scale-95 p-4 flex flex-col items-center justify-center gap-2 transition">
+        <span class="px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-medium text-xs sm:text-sm">
+          ${tile.title}
+        </span>
+      </button>
+    `;
+  }).join('');
+}
+
+function renderBottomNav() {
+  const nav = document.getElementById('bottomNavBar');
+  nav.innerHTML = bottomNavItems.map(item => `
+    <button onclick="handleAction('${item.action}', '${item.url || ''}')"
+            class="py-3 px-1 flex flex-col items-center justify-center gap-1 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 active:bg-slate-200 dark:active:bg-slate-700 transition">
+      ${item.icon ? `<i data-lucide="${item.icon}" class="w-5 h-5"></i>` : ''}
+      <span class="text-[11px] font-medium truncate max-w-full">${item.title}</span>
+    </button>
+  `).join('');
+}
+
+function handleAction(action, url = '') {
+  if (action === 'schedule') {
+    openView('schedule');
+  } else if (action === 'telegram') {
+    // Находим элемент telegram в bottomNavItems, чтобы забрать список каналов
+    const tgItem = bottomNavItems.find(item => item.id === 'telegram');
+    const channels = tgItem?.channels || [];
+
+    const buttonsHtml = channels.map(ch => `
+      <a href="${ch.url}" target="_blank" rel="noopener noreferrer"
+         class="flex items-center justify-between p-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+        <div>
+          <div class="font-semibold text-slate-900 dark:text-slate-100">${ch.name}</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400">${ch.desc}</div>
+        </div>
+        <i data-lucide="external-link" class="w-4 h-4 text-slate-400"></i>
+      </a>
+    `).join('');
+
+    openModal('Наши Telegram-каналы', `<div class="space-y-2">${buttonsHtml}</div>`);
+  } else if (action === 'link' && url) {
+    if (tg?.openTelegramLink && url.includes('t.me')) {
+      tg.openTelegramLink(url);
+    } else {
+      window.open(url, '_blank');
+    }
+  } else if (action === 'settings') {
+    openModal('Настройки', `
+      <div class="flex items-center justify-between">
+        <span>Тёмная тема</span>
+        <button onclick="toggleTheme()" class="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 text-xs font-medium">
+          Переключить
+        </button>
+      </div>
+    `);
+  } else {
+    openModal('Раздел в разработке', 'Эта кнопка пока не активна.');
+  }
+}
+
+function openModal(title, htmlContent) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = htmlContent;
+  document.getElementById('infoModal').classList.remove('hidden');
+  lucide.createIcons();
+}
+
+function closeModal() {
+  document.getElementById('infoModal').classList.add('hidden');
 }
 
 // Отрисовка выпадающего меню (3 полоски) и бейджика текущего раздела
@@ -155,7 +262,6 @@ function changeCategory(categoryId) {
   state.isMenuOpen = false;
   Storage.saveCategory(categoryId);
 
-  // Выбираем первый доступный элемент в новом разделе (первую группу или первого преподавателя)
   const firstKey = Object.keys(scheduleData[categoryId] || {})[0] || '';
   state.group = firstKey;
   Storage.saveGroup(firstKey);
@@ -174,6 +280,8 @@ function changeWeek(weekType) {
 }
 
 function render() {
+  renderHomeTiles();
+  renderBottomNav();
   renderMenu();
   renderGroupSelect();
   renderWeekToggle();
@@ -194,14 +302,6 @@ document.getElementById('searchInput').addEventListener('input', (e) => {
   renderCards();
 });
 
-document.getElementById('themeToggle').addEventListener('click', () => {
-  const htmlEl = document.documentElement;
-  const isDark = htmlEl.classList.toggle('dark');
-  htmlEl.classList.toggle('light', !isDark);
-  Storage.saveTheme(isDark ? 'dark' : 'light');
-});
-
-// Открытие / закрытие бургер-меню по клику на кнопку с 3 полосками
 document.getElementById('menuToggle').addEventListener('click', (e) => {
   e.stopPropagation();
   state.isMenuOpen = !state.isMenuOpen;
@@ -209,10 +309,9 @@ document.getElementById('menuToggle').addEventListener('click', (e) => {
   lucide.createIcons();
 });
 
-// Закрытие бургер-меню при клике в любое другое место страницы
 document.addEventListener('click', (e) => {
   const wrapper = document.getElementById('menuWrapper');
-  if (state.isMenuOpen && !wrapper.contains(e.target)) {
+  if (state.isMenuOpen && wrapper && !wrapper.contains(e.target)) {
     state.isMenuOpen = false;
     renderMenu();
   }
