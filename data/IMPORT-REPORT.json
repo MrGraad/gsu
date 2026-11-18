@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 7,
+  "faculty": "Факультет физики и информационных технологий",
+  "addedCourses": [
+    2,
+    3,
+    4
+  ],
+  "preservedFirstYearGroups": 7,
+  "addedSelectableGroups": 21,
+  "sourceEntriesCourses2to4": 806,
+  "deduplicatedSharedSubgroupEntries": 62,
+  "storedLessonsCourses2to4": 744,
+  "subgroupLabels": [
+    "Ф-23: 1–2",
+    "Ф-33: 1–5",
+    "Ф-43: 1–3"
+  ],
+  "weekMapping": {
+    "1": "верхняя строка таблицы — под чертой",
+    "2": "нижняя строка таблицы — над чертой",
+    "0": "каждую неделю"
+  },
+  "missingTeacherFields": 12,
+  "missingRoomFields": 19,
+  "weekDistribution": {
+    "0": 371,
+    "1": 179,
+    "2": 194
+  },
+  "issues": [],
+  "subgroupHandling": {
+    "selectableGroup": "Одна общая группа для всех потоков подгрупп",
+    "lessonLabels": "Отдельная пара помечается «Подгруппа N», общая пара — «Все подгруппы»",
+    "groups": {
+      "Ф-23": [
+        1,
+        2
+      ],
+      "Ф-33": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "Ф-43": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "preservedFirstYearPhysicsItGroups": 7,
+  "preservedBiologyGroups": 6,
+  "totalSelectableGroups": 34,
+  "totalGroupLessons": 1016
+}

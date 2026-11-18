@@ -1,0 +1,23 @@
+{
+  "id": "example-group-11",
+  "name": "ПРИМЕР-11",
+  "program": "Название специальности",
+  "course": 1,
+  "lessons": [
+    {
+      "id": "example-lesson-001",
+      "day": 1,
+      "slot": 1,
+      "start": "09:00",
+      "end": "10:35",
+      "title": "Название дисциплины",
+      "type": "Лекция",
+      "location": "Корпус 1, ауд. 101",
+      "teacher": "Фамилия И.О.",
+      "week": 0,
+      "origin": "official",
+      "validFrom": "2026-09-01",
+      "notes": "Примечание, если есть"
+    }
+  ]
+}
