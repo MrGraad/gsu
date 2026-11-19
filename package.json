@@ -1,0 +1,12 @@
+{
+  "name": "raspisanie-site",
+  "version": "3.9.5",
+  "private": true,
+  "type": "module",
+  "description": "Адаптивное расписание занятий: факультеты, группы, курсы и недельные варианты",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "check": "node scripts/check-project.mjs",
+    "test": "node --test"
+  }
+}
