@@ -1,1 +1,1 @@
-# gsu
+# GSU.BY
