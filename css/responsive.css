@@ -1,0 +1,83 @@
+/* Адаптация для планшетов и телефонов вынесена отдельно,
+   чтобы основные стили интерфейса оставались читаемыми. */
+@media (max-width: 900px) {
+  :root { --sidebar-width: 138px; }
+  .main-area { padding-left: 17px; padding-right: 17px; }
+  .schedule-layout { grid-template-columns: minmax(205px,.8fr) minmax(0,1.2fr); gap: 12px; }
+  .lesson-card { grid-template-columns: 104px minmax(0,1fr); column-gap: 8px; row-gap: 6px; }
+  .lesson-room, .lesson-teacher { grid-column: 2; justify-content: flex-start; }
+  .sidebar { padding-left: 9px; padding-right: 9px; }
+}
+
+@media (max-width: 640px) {
+  .app-shell { display: block; }
+  .sidebar { width: 100%; min-height: 0; height: auto; padding: 9px 12px; flex-direction: row; align-items: center; gap: 10px; }
+  .brand { padding: 0 2px; gap: 5px; flex: 0 0 auto; }
+  .brand-mark { width: 28px; height: 28px; }
+  .brand-mark svg { width: 27px; height: 27px; }
+  .brand-name { font-size: 13px; }
+  .side-nav { display: flex; gap: 4px; margin: 0 0 0 auto; overflow-x: auto; scrollbar-width: none; }
+  .side-nav::-webkit-scrollbar { display: none; }
+  .nav-link { padding: 9px 10px; border-radius: 10px; gap: 7px; white-space: nowrap; font-size: 10px; }
+  .nav-link .nav-icon { width: 18px; height: 18px; flex: 0 0 18px; margin-right: 0; }
+  .nav-link .nav-icon svg { width: 16px; height: 16px; }
+  .sidebar-bottom { display: none; }
+  .main-area { padding: 12px 13px 75px; }
+  .topbar { height: 40px; }
+  .search-box { width: calc(100% - 49px); height: 37px; }
+  .profile-button { width: 34px; height: 34px; }
+  .content { margin-top: 17px; }
+  .page-heading { margin-bottom: 14px; align-items: center; }
+  h1 { font-size: 23px; }
+  .date-info { min-width: 91px; padding: 7px 9px; }
+  .heading-date { font-size: 10px; }
+  .week-type-label { font-size: 9px; }
+  .week-type-row { width: min(170px, 100%); }
+  .selection-panel { padding: 11px 12px 12px; margin-bottom: 13px; }
+  .selection-heading { align-items: flex-start; flex-direction: column; gap: 3px; margin-bottom: 8px; }
+  .selection-fields { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .field-faculty { grid-column: 1 / -1; }
+  .field select { height: 40px; }
+  .schedule-layout { grid-template-columns: 1fr; gap: 14px; }
+  .calendar-card { padding: 14px 13px 11px; }
+  .calendar-head { margin-bottom: 13px; }
+  .calendar-grid { row-gap: 5px; }
+  .day-cell { width: 35px; height: 35px; }
+  .calendar-foot { margin-top: 12px; }
+  .lessons-heading h2 { font-size: 15px; }
+  .about-links-list { grid-template-columns: 1fr; }
+  .about-link { padding: 12px; }
+  .simple-view { padding: 18px 15px; }
+  .week-type-row { margin-top: 5px; padding-top: 4px; }
+  .lesson-card { grid-template-columns: 92px minmax(0,1fr); column-gap: 8px; row-gap: 6px; padding: 12px; min-height: 0; }
+  .lesson-time { font-size: 10px; }
+  .lesson-subject { font-size: 12px; }
+  .lesson-room, .lesson-teacher { grid-column: 2; font-size: 10px; }
+  .cityline { height: 80px; }
+}
+
+@media (max-width: 390px) {
+  .brand-name { display: none; }
+  .nav-link { padding: 8px 7px; font-size: 9px; }
+  .nav-link .nav-icon { margin-right: 0; }
+  .day-cell { width: 31px; height: 31px; }
+  .lesson-card { grid-template-columns: 82px minmax(0,1fr); }
+  .lesson-room, .lesson-teacher { grid-column: 2; }
+}
+
+/* Учитываем системную настройку уменьшения анимации. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+
+@media (max-width: 640px) {
+  .teachers-toolbar { align-items: stretch; }
+  .teachers-search { flex-basis: 100%; }
+  .secondary-action { width: 100%; }
+  .announcement-card { padding: 14px; }
+  .announcement-title { font-size: 13px; }
+}
+
+@media (max-width: 640px) {
+  .site-footer { margin-top: 28px; padding: 12px 4px 2px; font-size: 9px; }
+}
